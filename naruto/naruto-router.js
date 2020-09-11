@@ -11,16 +11,17 @@ router.get("/", async (req, res, next) => {
 	}
 })
 
-router.get("/:id", async (req, res, next) => {
+router.get("/del/:id", async (req, res, next) => {
 	try {
-		const character = await Naruto.findById(req.params.id)
+		const id = req.params.id
+		const character = await Naruto.findById(id)
 		if (!character) {
 			return res.status(404).json({
 				message: "character not found",
 			})
 		}
-
-		res.json(character)
+		Naruto.remove(id)
+		res.json({message: "character removed"})
 	} catch (err) {
 		next(err)
 	}
